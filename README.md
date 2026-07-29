@@ -254,6 +254,242 @@ Iterative Counting เป็นอัลกอริทึมที่ เหม
 
 ------------------------------------------------------------ จบข้อ 3. ------------------------------------------------------------
 
+ข้อ 4 การจัดกลุ่มจำนวนคู่และจำนวนคี่
+
+1. คำอธิบายแนวคิดของอัลกอริทึม
+
+โจทย์กำหนดให้ออกแบบอย่างน้อย 3 อัลกอริทึมในการจัดกลุ่มให้อารีเรย์มีเลขคู่ขึ้นก่อนเลขคี่:
+
+  อัลกอริทึมที่ 1: Recursive Two-Pointer (rearrangeRecursive)
+
+    ใช้วิธีเวียนเกิดร่วมกับตัวชี้ 2 ตำแหน่ง (left อยู่ซ้ายสุด และ right อยู่ขวาสุด)
+
+    Base Case: เมื่อ left >= right ให้หยุดการทำงาน (ประมวลผลจัดกลุ่มสลับตัวเลขครบทุกตำแหน่งแล้ว)
+
+    Recursive Case:
+
+      ถ้า a[left] เป็นเลขคู่ ให้เลื่อน left ไปทางขวา (left + 1)
+
+      ถ้า a[right] เป็นเลขคี่ ให้เลื่อน right ไปทางซ้าย (right - 1)
+
+      ถ้า a[left] เป็นเลขคี่ และ a[right] เป็นเลขคู่ ให้สลับค่า (Swap) ระหว่างตำแหน่ง left และ right จากนั้นขยับตัวชี้ทั้งสองพร้อมกัน (left + 1, right - 1)
+
+  อัลกอริทึมที่ 2: Iterative Two-Pointer (rearrangeTwoPointer)
+
+    ใช้แนวคิด Two-Pointer เดียวกับวิธีแรก แต่เปลี่ยนจากการเรียกเมธอดซ้ำมาใช้การวนลูป while (left < right) เพื่อเลื่อนตัวชี้และทำการสลับค่าในอาเรย์เดิมทันที (In-place)
+
+  อัลกอริทึมที่ 3: Extra Array (rearrangeExtraArray)
+
+    สร้างอาเรย์ใหม่ที่มีขนาดเท่ากับอาเรย์เดิม วนลูปอ่านอาเรย์ต้นฉบับรอบแรกเพื่อคัดเอาเฉพาะ เลขคู่ ไปใส่ในอาเรย์ใหม่ตามลำดับ จากนั้นวนลูปอ่านรอบที่สองเพื่อนำ เลขคี่ ไปใส่ต่อท้ายในอาเรย์ใหม่
+
+2. Pseudocode
+
+Algorithm 1: Recursive Two-Pointer
+
+<img width="623" height="260" alt="image" src="https://github.com/user-attachments/assets/76b0dd5a-4622-4e33-a149-d49511057788" />
+
+
+Algorithm 2: Iterative Two-Pointer
+
+<img width="464" height="450" alt="image" src="https://github.com/user-attachments/assets/3178f3a0-1a5d-43d9-a098-4b0aeac845b4" />
+
+Algorithm 3: Extra Array
+
+<img width="413" height="510" alt="image" src="https://github.com/user-attachments/assets/7a5ec125-f3b1-4edf-9bf3-9f870c3afbcf" />
+
+3. โปรแกรมภาษา Java ที่สามารถทำงานได้จริง
+
+ไฟล์ที่ชื่อว่า EvenOddRearrangeApp.java
+
+4. ตัวอย่างข้อมูลนำเข้าและผลลัพธ์
+
+<img width="473" height="290" alt="image" src="https://github.com/user-attachments/assets/db7ca4cc-17be-4d5a-93cd-5c7b5eb4609e" />
+
+5. การวิเคราะห์ Time Complexity
+  
+  Recursive Two-Pointer: O(N)
+
+    เหตุผล: ตัวชี้ left และ right ขยับเข้าหากันทีละตำแหน่ง ทำการสแกนสมาชิกในอาเรย์ความยาว N เพียงรอบเดียว
+
+  Iterative Two-Pointer: O(N)
+
+    เหตุผล: ลูป while ทำงานโดยให้ตัวชี้ left เพิ่มขึ้น และ right ลดลง สมาชิกแต่ละตัวถูกตรวจสอบสูงสุดไม่เกิน 2 ครั้ง ทำให้ Time Complexity เป็น O(N)
+
+  Extra Array: O(N)
+
+    เหตุผล: มีการวนลูปอ่านอาเรย์ 2 รอบ (รอบแรกเก็บคู่ N ครั้ง, รอบสองเก็บคี่ N ครั้ง) รวมเป็น 2N ขั้นตอน หรือ O(N)
+
+6. การวิเคราะห์ Space Complexity
+
+  Recursive Two-Pointer: O(N)
+
+    เหตุผล: แม้จะปรับเปลี่ยนข้อมูลในอาเรย์เดิม (In-place) แต่การเวียนเกิดสร้าง Call Stack ลึกลงไปสูงสุด N ชั้นใน Worst Case
+
+  Iterative Two-Pointer: O(1)
+
+    เหตุผล: จัดเรียงข้อมูลในอาเรย์เดิมทันที (In-place) โดยใช้เพียงตัวแปรดรรชนี left, right และ temp ซึ่งเป็นหน่วยความจำคงที่
+
+  Extra Array: O(N)
+
+    เหตุผล: ต้องสร้างอาเรย์ใหม่ขนาด N ช่องเพื่อจัดเก็บผลลัพธ์แยกต่างหาก
+
+7. การเปรียบเทียบเชิงวิเคราะห์ตามโจทย์
+
+Algorithm 1: Recursive Two-Pointer
+
+Time Complexity : O(N)
+
+Space Complexity : O(N) (Call Stack)
+
+จำนวนครั้งของการสลับข้อมูล : สูงสุด N/2 ครั้ง
+
+การเปลี่ยนแปลงอาเรย์เดิม : เปลี่ยนในอาเรย์เดิม (In-place)
+
+ความเป็น Stable Algorithm : ไม่เป็น (Unstable)
+
+
+Algorithm 2: Iterative Two-Pointer
+
+Time Complexity : O(N)
+
+Space Complexity : O(1)
+
+จำนวนครั้งของการสลับข้อมูล : สูงสุด N/2 ครั้ง
+
+การเปลี่ยนแปลงอาเรย์เดิม : เปลี่ยนในอาเรย์เดิม (In-place)
+
+ความเป็น Stable Algorithm : ไม่เป็น (Unstable)
+
+
+Algorithm 3: Extra Array
+
+Time Complexity : O(N)
+
+Space Complexity : O(N) (Extra Array)
+
+จำนวนครั้งของการสลับข้อมูล : 0 ครั้ง (ใช้การคัดลอกลงอาเรย์ใหม่)
+
+การเปลี่ยนแปลงอาเรย์เดิม : ไม่เปลี่ยนอาเรย์เดิม (สร้างอาเรย์ใหม่)
+
+ความเป็น Stable Algorithm : เป็น (Stable)
+
+8. สรุปว่าอัลกอริทึมใดเหมาะสมกว่าภายใต้เงื่อนไขใด
+
+Iterative Two-Pointer (rearrangeTwoPointer) มีความเหมาะสมที่สุดเมื่อ มีข้อจำกัดเรื่องพื้นที่หน่วยความจำ (Memory-constrained) และ ไม่สนใจลำดับดั้งเดิมของตัวเลข เนื่องจากเป็นอัลกอริทึมแบบ In-place (O(1) Space Complexity) และสลับข้อมูลได้รวดเร็ว
+
+Extra Array (rearrangeExtraArray) มีความเหมาะสมที่สุดเมื่อ ต้องการรักษาลำดับดั้งเดิมของตัวเลขไว้ (Stable Algorithm) เช่น โจทย์บังคับว่าเลขคู่ต้องเรียงตามลำดับที่ปรากฏเดิมก่อน (2, 4, 6) แล้วตามด้วยเลขคี่ตามลำดับเดิม (5, 7, 9) หรือเมื่อไม่ต้องการแก้ไขข้อมูลในอาเรย์ต้นฉบับ
+
+Recursive Two-Pointer เหมาะสมสำหรับการศึกษาทำความเข้าใจกระบวนการทำงานแบบ Divide and Conquer หรือการใช้ตัวชี้คู่ในการเวียนเกิดเท่านั้น ไม่เหมาะสำหรับการนำไปใช้งานจริงกับข้อมูลขนาดใหญ่เนื่องจากสิ้นเปลือง Call Stack
+
+------------------------------------------------------------ จบข้อ 4. ------------------------------------------------------------
+
+ข้อ 5 การแบ่งอาร์เรย์ตามค่า k
+
+1. คำอธิบายแนวคิดของอัลกอริทึม
+
+โจทย์ต้องการให้จัดเรียงสมาชิกในอาร์เรย์ใหม่โดยแบ่งออกเป็น 2 กลุ่ม คือ กลุ่มที่มีค่าน้อยกว่าหรือเท่ากับ $k$ ($\le k$) ไว้ด้านหน้า และกลุ่มที่มีค่ามากกว่า $k$ ($> k$) ไว้ด้านหลัง
+
+  อัลกอริทึมที่ 1: Recursive Partition (partitionRecursive)
+
+    ใช้ตัวชี้ 2 ตำแหน่ง (left อยู่ซ้ายสุด และ right อยู่ขวาสุด) ในการประมวลผลแบบเวียนเกิด
+
+    Base Case: เมื่อ left >= right ให้หยุดการทำงาน
+
+    Recursive Case:
+
+      ขยับ left ไปทางขวาเรื่อยๆ ตราบใดที่ a[left] <= k
+      
+      ขยับ right ไปทางซ้ายเรื่อยๆ ตราบใดที่ a[right] > k
+      
+      หากพบว่า left < right (ตัวซ้ายมากกว่า $k$ และตัวขวาน้อยกว่าหรือเท่ากับ $k$) ให้สลับค่า (Swap) ทั้งสองตำแหน่ง แล้วเรียกตัวเองซ้ำเพื่อประมวลผลช่วงถัดไป (left + 1, right - 1)
+
+ อัลกอริทึมที่ 2: Iterative Partition (partitionIterative)
+   
+    ใช้แนวคิด สองตัวชี้ (Two Pointers) เช่นเดียวกับวิธีแรก แต่เปลี่ยนเป็นลูป while (left < right) ในการเลื่อนตัวชี้ และทำการสลับตำแหน่งข้อมูลทันทีภายในลูปโดยไม่ต้องใช้ Call Stack
+
+  อัลกอริทึมที่ 3: Sorting-Based Algorithm (partitionBySorting)
+
+    ใช้การเรียงลำดับข้อมูลทั้งอาร์เรย์ก่อน (เช่น การเรียงจากน้อยไปมากด้วย Arrays.sort()) ซึ่งจะทำให้สมาชิกทุกตัวที่ $\le k$ ถูกจัดไปอยู่ด้านหน้าโดยอัตโนมัติ จากนั้นทำ Binary Search หรือ Linear Search ค้นหาตำแหน่งดรรชนีสุดท้ายที่มีค่าน้อยกว่าหรือเท่ากับ $k$
+
+2. Pseudocode
+
+Algorithm 1: Recursive Partition
+
+<img width="627" height="343" alt="image" src="https://github.com/user-attachments/assets/bb997086-af92-47e4-b348-156ed5e25110" />
+
+Algorithm 2: Iterative Partition
+
+<img width="460" height="476" alt="image" src="https://github.com/user-attachments/assets/a6b13b46-0793-403f-bebb-853f404a1920" />
+
+Algorithm 3: Sorting-Based Algorithm
+
+<img width="431" height="302" alt="image" src="https://github.com/user-attachments/assets/35a13bb0-b111-49d9-9676-b8856510b5cf" />
+
+3. โปรแกรมภาษา Java ที่สามารถทำงานได้จริง
+
+ไฟล์ชื่อว่า KPartitionApp.java
+
+4. ตัวอย่างข้อมูลนำเข้าและผลลัพธ์
+
+<img width="457" height="175" alt="image" src="https://github.com/user-attachments/assets/068eef51-7f65-4250-8236-b0952a6e1ef0" />
+
+5. การวิเคราะห์ Time Complexity
+
+  Recursive Partition: O(N)
+    
+    เหตุผล: ตัวชี้ left และ right เลื่อนผ่านสมาชิกแต่ละตัวในอาร์เรย์เพียงครั้งเดียว รวมการประมวลผลทั้งหมดเป็น N ขั้นตอน
+
+  Iterative Partition: O(N)
+
+    เหตุผล: ใช้ลูปเดียวในการสแกนข้อมูลทั้งอาร์เรย์ สมาชิกทุกตัวถูกตรวจสอบเพียงครั้งเดียว
+
+  Sorting-Based Algorithm: O(N \log N)
+
+    เหตุผล: ขั้นตอนการเรียงลำดับด้วย Arrays.sort() ใช้เวลา O(N \log N) ส่วนการสแกนหาตำแหน่งสุดท้ายใช้เวลา O(N) ทำให้เวลาสุทธิขึ้นอยู่กับขั้นตอนการเรียงลำดับ
+
+6. การวิเคราะห์ Space Complexity
+
+  Recursive Partition: O(N) (Worst Case)
+
+    เหตุผล: มีการสร้าง Call Stack จากการเรียกฟังก์ชันซ้ำ ลึกลงไปสูงสุด N/2 ชั้น หรือ O(N)
+
+  Iterative Partition: O(1)
+
+    เหตุผล: ใช้ตัวแปรตำแหน่ง left, right และตัวแปรสลับค่าชั่วคราว (temp) ทำให้ใช้พื้นที่คงที่
+
+  Sorting-Based Algorithm: O(\log N) ถึง O(N)
+
+    เหตุผล: ขึ้นอยู่กับอัลกอริทึมการ Sorting ของระบบ (เช่น Dual-Pivot Quicksort ใน Java Primitive Types ใช้พื้นที่ O(\log N) สำหรับ Recursion Stack)
+
+7. งานวิเคราะห์เจาะลึกตามโจทย์
+
+เหตุผลที่การเรียงลำดับ (Sorting) อาจทำให้โปรแกรมช้ากว่าที่จำเป็น
+
+โจทย์ต้องการเพียงแค่ "การแบ่งกลุ่ม (Partitioning)" ออกเป็น 2 ฝั่งเท่านั้น ไม่ได้ต้องการให้สมาชิกภายในกลุ่มเดียวกันเรียงลำดับจากน้อยไปมาก
+
+  การใช้ Partitioning (Iterative / Recursive) ทำงานด้วยความเร็ว O(N) (Linear Time)การใช้ Sorting ต้องเสียเวลาทำเกินความจำเป็นในการจัดเรียงสมาชิกภายในกลุ่มทั้งหมด ทำให้ความเร็วตกไปเป็น O(N \log N)
+
+ความสัมพันธ์ของปัญหานี้กับขั้นตอน Partition ใน Quick Sort
+
+ปัญหานี้คือ ตัวอย่างจริงของขั้นตอน Partition ในอัลกอริทึม Quick Sort
+
+  ใน Quick Sort จะเลือกสมาชิกตัวหนึ่งขึ้นมาเป็น Pivot (ในโจทย์ข้อนี้คือค่า $k$)
+  
+  จากนั้นแบ่งอาร์เรย์ออกเป็น 2 ส่วน: ฝั่งซ้ายมีค่าน้อยกว่าหรือเท่ากับ Pivot และฝั่งขวามีค่ามากกว่า Pivot เพื่อเตรียมนำแต่ละฝั่งไปทำ Quick Sort ในย่อยถัดไป (ระเบียบวิธีที่ใช้นี้สอดคล้องกับ Hoare's Partition Scheme)
+
+การระบุการทำงานแบบ In-place
+
+  Iterative Partition: ทำงานแบบ In-place 100% เพราะแก้ไขข้อมูลในอาร์เรย์เดิมโดยตรงและใช้หน่วยความจำเพิ่มคงที่ (O(1) Auxiliary Space)
+  
+  Recursive Partition: เป็นการจัดข้อมูลแบบ In-place ในแง่ของข้อมูลอาร์เรย์ (ไม่สร้างอาร์เรย์ใหม่) แต่ ไม่เป็น In-place ทางหน่วยความจำระบบ เนื่องจากต้องใช้ Call Stack O(N)
+  
+  Sorting-Based Algorithm: ขึ้นอยู่กับอัลกอริทึม Sorting ใน Java Dual-Pivot Quicksort นับว่าเป็น In-place ในแง่อาร์เรย์ แต่ใช้พื้นที่ Stack O(\log N)
+
+8. สรุปอัลกอริทึมที่เหมาะสมที่สุด
+
+Iterative Partition เป็นวิธีที่ดีและเหมาะสมที่สุดสำหรับโจทย์ข้อนี้ เนื่องจากทำงานด้วยความเร็วสูงสุด $O(N)$ ใช้หน่วยความจำเพิ่มคงที่ $O(1)$ (In-place) และไม่มีความเสี่ยงเรื่อง StackOverflowError เหมือนวิธี Recursive
+
+------------------------------------------------------------ จบข้อ 5. ------------------------------------------------------------
 
 
 
@@ -262,3 +498,11 @@ Iterative Counting เป็นอัลกอริทึมที่ เหม
 
 
 
+
+
+
+
+
+
+
+  
