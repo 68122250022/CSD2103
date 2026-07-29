@@ -77,3 +77,36 @@ Iterative Algorithm (ร่วมกับการใช้ StringBuilder) ม�
 Recursive Algorithm มีความเหมาะสมภายใต้เงื่อนไขที่เป็นการศึกษาเพื่อทำความเข้าใจการเขียนโปรแกรมแบบเวียนเกิด (Educational purposes) หรือสามารถใช้ได้หากมีข้อจำกัด/การการันตีว่าข้อมูลนำเข้า (Input String) จะมีขนาดเล็กมากๆ เท่านั้นครับ
 
 -------------------------------------------------------------------------- จบข้อ 1. --------------------------------------------------------------------------
+
+ข้อ 2 การตรวจสอบ Palindrome
+
+1. คำอธิบายแนวคิดของอัลกอริทึม
+
+ก่อนการตรวจสอบสตริง จะต้องทำความสะอาดข้อความ (Sanitization) โดยตัดช่องว่าง เครื่องหมายวรรคตอน ออกทั้งหมด และแปลงเป็นตัวพิมพ์เล็ก เพื่อรองรับเงื่อนไขเพิ่มเติม (เช่น "A man, a plan, a canal: Panama")
+
+อัลกอริทึมที่ 1: Reverse and Compare (isPalindromeByReverse)
+แนวคิดคือการสร้างสตริงย้อนกลับ (Reversed String) ขึ้นมาใหม่ทั้งหมดก่อน จากนั้นจึงนำสตริงใหม่มาเปรียบเทียบกับสตริงเดิมด้วยเมธอด .equals() หากเหมือนกันทุกประการแสดงว่าเป็น Palindrome
+
+อัลกอริทึมที่ 2: Recursive Two-Pointer (isPalindromeRecursive)
+แนวคิดคือการใช้ตัวชี้ 2 ตำแหน่ง คือ left (ซ้ายสุด) และ right (ขวาสุด) เปรียบเทียบตัวอักษรคู่ดังกล่าว หากพบว่าไม่เท่ากันจะสรุปทันทีว่า ไม่ใช่ Palindrome แต่ถ้าเท่ากันจะทำการเรียกเมธอดตัวเองซ้ำ (Recursive) โดยขยับตัวชี้เข้าหากัน (left + 1, right - 1)
+
+  Base Case 1: left >= right คืนค่า true (ตรวจสอบครบทุกคู่แล้ว ตัวชี้มาชนกันหรือเหลื่อมกัน แสดงว่าเป็น Palindrome)
+
+  Base Case 2: s.charAt(left) != s.charAt(right) คืนค่า false (พบตัวอักษรไม่ตรงกัน หยุดการทำงานทันที)
+
+  Recursive Case: isPalindromeRecursive(s, left + 1, right - 1) (ตัวอักษรตรงกัน ให้ส่งคู่อื่นเข้าไปตรวจสอบต่อ)
+
+2. Pseudocode
+
+Algorithm 1: Reverse and Compare
+
+<img width="658" height="157" alt="image" src="https://github.com/user-attachments/assets/35c67da5-cf4d-4e23-95d9-c32dcf545ed2" />
+
+Algorithm 2: Recursive Two-Pointer
+
+<img width="666" height="265" alt="image" src="https://github.com/user-attachments/assets/f7b3a158-1ca9-45c8-8ae8-e4c341a2e0f5" />
+
+3. โปรแกรมภาษา Java ที่สามารถทำงานได้จริง
+
+ไฟล์ที่ชื่อว่า PalindromeApp.java
+
